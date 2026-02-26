@@ -1,0 +1,12 @@
+input_dir: "./downloads"
+output_dir: "./library"
+dry_run: true
+llm:
+  model: "gpt-4o"
+  api_key: "YOUR_API_KEY"
+
+templates:
+  music: "Music/{Artist}/{Album} ({Year})/{Track} - {Title}.{ext}"
+  movies: "Movies/{Title} ({Year})/{Title} ({Year}).{ext}"
+  tv_shows: "TV Shows/{Series}/{Season XX}/{Series} - S{XX}E{YY} - {Episode Title}.{ext}"
+  ebooks: "Books/{Author}/{Series}/{Index} - {Title}.{ext}"

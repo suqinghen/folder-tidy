@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "media_organizer"
+version = "0.1.0"
+description = "An intelligent file organization tool powered by LLMs."
+readme = "README.md"
+authors = [
+  { name = "Jules", email = "jules@example.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "langchain",
+    "typer",
+    "mutagen",
+    "ffmpeg-python",
+    "ebooklib",
+    "pypdf2",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+
+[project.scripts]
+media-organizer = "media_organizer.main:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["media_organizer*"]
