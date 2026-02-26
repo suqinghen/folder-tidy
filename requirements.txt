@@ -1,0 +1,8 @@
+langchain
+typer
+mutagen
+ffmpeg-python
+ebooklib
+pypdf2
+pyyaml
+pytest
