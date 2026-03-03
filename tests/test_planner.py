@@ -14,4 +14,5 @@ def test_planner_plan():
     }
     plan = planner.plan(metadata)
     assert plan["source"] == "test/song.mp3"
-    assert plan["destination"] == "organized/song.mp3"
+    # The default behavior for unknown/no template is now "Unsorted/filename"
+    assert plan["destination"] == "Unsorted/song.mp3"

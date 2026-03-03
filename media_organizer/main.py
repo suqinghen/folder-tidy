@@ -31,7 +31,7 @@ def run(config_path: str = "config.yaml", dry_run: bool = True):
     for file_path in files:
         media_type = classifier.classify(file_path)
         metadata = analyzer.analyze(file_path)
-        plan = planner.plan(metadata)
+        plan = planner.plan(metadata, media_type)
         executor.execute(plan)
 
 if __name__ == "__main__":
