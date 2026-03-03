@@ -15,5 +15,22 @@ class Scanner:
 
         for path in self.input_path.rglob('*'):
             if path.is_file():
+                try:
+                    rel_path = path.relative_to(self.input_path)
+                except ValueError:
+                    rel_path = path
+
+                is_system_file = False
+                for part in rel_path.parts:
+                    if part.startswith('.'):
+                        is_system_file = True
+                        break
+
+                if is_system_file:
+                    continue
+
+                if path.name.lower() in ['thumbs.db', 'desktop.ini']:
+                    continue
+
                 files.append(path)
         return files
