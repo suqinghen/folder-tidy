@@ -11,10 +11,14 @@ class Planner:
         """
         Maps metadata to a target path based on configuration.
         """
+        filename = metadata.get('filename', '')
+        # Security: Extract basename to prevent path traversal and sanitize it
+        safe_filename = self._sanitize_string(pathlib.Path(filename).name)
+
         if media_type == MediaType.UNKNOWN:
             return {
                 "source": metadata.get("original_path"),
-                "destination": f"Unsorted/{metadata.get('filename')}",
+                "destination": f"Unsorted/{safe_filename}",
                 "action": "move"
             }
 
@@ -23,7 +27,7 @@ class Planner:
             # Fallback if no template is defined for the media type
             return {
                 "source": metadata.get("original_path"),
-                "destination": f"Unsorted/{metadata.get('filename')}",
+                "destination": f"Unsorted/{safe_filename}",
                 "action": "move"
             }
 
@@ -38,12 +42,12 @@ class Planner:
             # But to be safe, let's catch it and log/print?
             # Given the prompt, let's just let it raise or handle it.
             # The test cases assume complete metadata.
-            print(f"Warning: Missing metadata key {e} for {metadata.get('filename')}")
-            destination = f"Unsorted/{metadata.get('filename')}"
+            print(f"Warning: Missing metadata key {e} for {safe_filename}")
+            destination = f"Unsorted/{safe_filename}"
         except ValueError as e:
              # Handle invalid format string issues
-             print(f"Error formatting path for {metadata.get('filename')}: {e}")
-             destination = f"Unsorted/{metadata.get('filename')}"
+             print(f"Error formatting path for {safe_filename}: {e}")
+             destination = f"Unsorted/{safe_filename}"
 
         return {
             "source": metadata.get("original_path"),
@@ -97,15 +101,21 @@ class Planner:
 
         return enriched
 
+    def _sanitize_string(self, value: str) -> str:
+        # Replace illegal filename characters with underscores
+        # Common illegal chars: / \ : * ? " < > |
+        # Also stripping leading/trailing whitespace might be good practice
+        clean = re.sub(r'[\\/*?:"<>|]', '_', value).strip()
+        # Prevent path traversal components like '..' or '.'
+        if clean in ('.', '..'):
+            return "_"
+        return clean
+
     def _sanitize_metadata(self, metadata: Dict[str, Any]) -> Dict[str, Any]:
         sanitized = {}
         for key, value in metadata.items():
             if isinstance(value, str):
-                # Replace illegal filename characters with underscores
-                # Common illegal chars: / \ : * ? " < > |
-                # Also stripping leading/trailing whitespace might be good practice
-                clean_value = re.sub(r'[\\/*?:"<>|]', '_', value).strip()
-                sanitized[key] = clean_value
+                sanitized[key] = self._sanitize_string(value)
             else:
                 sanitized[key] = value
         return sanitized
