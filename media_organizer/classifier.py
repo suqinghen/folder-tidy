@@ -9,9 +9,6 @@ class MediaType(Enum):
     UNKNOWN = "unknown"
 
 class Classifier:
-    def __init__(self):
-        pass
-
     def classify(self, file_path: pathlib.Path) -> MediaType:
         """
         Determines the media type of the given file.

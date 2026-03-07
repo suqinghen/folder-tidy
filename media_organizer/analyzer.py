@@ -2,9 +2,6 @@ import pathlib
 from typing import Dict, Any
 
 class Analyzer:
-    def __init__(self):
-        pass
-
     def analyze(self, file_path: pathlib.Path) -> Dict[str, Any]:
         """
         Analyzes the file and returns metadata.
