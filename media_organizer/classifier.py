@@ -15,12 +15,12 @@ class Classifier:
         """
         # Placeholder implementation
         suffix = file_path.suffix.lower()
-        if suffix in ['.mp3', '.flac', '.m4a']:
+        if suffix in {'.mp3', '.flac', '.m4a'}:
             return MediaType.MUSIC
-        elif suffix in ['.mp4', '.mkv', '.avi']:
+        elif suffix in {'.mp4', '.mkv', '.avi'}:
             # Naive distinction between movies and TV shows often requires more context
             return MediaType.MOVIE
-        elif suffix in ['.epub', '.pdf', '.mobi']:
+        elif suffix in {'.epub', '.pdf', '.mobi'}:
             return MediaType.EBOOK
 
         return MediaType.UNKNOWN
